@@ -84,7 +84,6 @@ public class Tag {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", user=" + user.getId() +
                 '}';
     }
 }
