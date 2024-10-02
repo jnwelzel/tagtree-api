@@ -8,9 +8,9 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
-public class TagModelAssembler implements RepresentationModelAssembler<Tag, EntityModel<Tag>> {
+public class TagModelAssembler implements RepresentationModelAssembler<TagModel, EntityModel<TagModel>> {
     @Override
-    public EntityModel<Tag> toModel(Tag tag) {
+    public EntityModel<TagModel> toModel(TagModel tag) {
         return EntityModel.of(tag, //
                 linkTo(methodOn(TagController.class).one(tag.getUser().getId(), tag.getId())).withSelfRel());
     }

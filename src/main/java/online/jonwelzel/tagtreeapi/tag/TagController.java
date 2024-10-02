@@ -24,15 +24,15 @@ public class TagController {
     }
 
     @GetMapping("users/{userId}/tags/{id}")
-    public EntityModel<Tag> one(@PathVariable long userId, @PathVariable long id) {
-        Tag tag = tagRepository.findById(id).orElseThrow(() -> new TagNotFoundException(userId, id));
+    public EntityModel<TagModel> one(@PathVariable long userId, @PathVariable long id) {
+        TagModel tag = tagRepository.findById(id).orElseThrow(() -> new TagNotFoundException(userId, id));
 
         return tagModelAssembler.toModel(tag);
     }
 
     @GetMapping("users/{userId}/tags")
-    public CollectionModel<EntityModel<Tag>> all(@PathVariable long userId) {
-        List<EntityModel<Tag>> tags = tagRepository.findTagsByUserId(userId).stream().map(tagModelAssembler::toModel).toList();
+    public CollectionModel<EntityModel<TagModel>> all(@PathVariable long userId) {
+        List<EntityModel<TagModel>> tags = tagRepository.findTagsByUserId(userId).stream().map(tagModelAssembler::toModel).toList();
 
         return CollectionModel.of(tags, linkTo(methodOn(TagController.class).all(userId)).withSelfRel());
     }

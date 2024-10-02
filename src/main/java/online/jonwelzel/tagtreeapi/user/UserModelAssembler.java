@@ -7,9 +7,9 @@ import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserModelAssembler implements RepresentationModelAssembler<User, EntityModel<User>> {
+public class UserModelAssembler implements RepresentationModelAssembler<UserModel, EntityModel<UserModel>> {
     @Override
-    public EntityModel<User> toModel(User user) {
+    public EntityModel<UserModel> toModel(UserModel user) {
         return EntityModel.of(user, //
                 linkTo(methodOn(UserController.class).one(user.getId())).withSelfRel(),
                 linkTo(UserController.class).slash(user.getId()).slash("tags").withRel("tags"),

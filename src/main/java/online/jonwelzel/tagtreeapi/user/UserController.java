@@ -24,17 +24,17 @@ public class UserController {
     }
 
     @GetMapping("users/{id}")
-    public EntityModel<User> one(@PathVariable Long id) {
-        User user = repository.findById(id) //
+    public EntityModel<UserModel> one(@PathVariable Long id) {
+        UserModel user = repository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
 
         return assembler.toModel(user);
     }
 
     @GetMapping("users")
-    public CollectionModel<EntityModel<User>> all() {
-        List<EntityModel<User>> users = repository.findAll().stream() //
-                .map(assembler::toModel) //
+    public CollectionModel<EntityModel<UserModel>> all() {
+        List<EntityModel<UserModel>> users = repository.findAll().stream()
+                .map(assembler::toModel)
                 .collect(Collectors.toList());
 
         return CollectionModel.of(users, linkTo(methodOn(UserController.class).all()).withSelfRel());

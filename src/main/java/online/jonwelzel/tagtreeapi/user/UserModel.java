@@ -1,17 +1,20 @@
 package online.jonwelzel.tagtreeapi.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import online.jonwelzel.tagtreeapi.tag.Tag;
+import online.jonwelzel.tagtreeapi.role.RoleModel;
+import online.jonwelzel.tagtreeapi.tag.TagModel;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table
-public class User  {
+@Table(name = "users")
+public class UserModel {
     @Id
     @GeneratedValue
     private Long id;
@@ -23,6 +26,7 @@ public class User  {
     private String userName;
 
     @Column(nullable = false)
+    @JsonIgnore
     private String password;
 
     @Column(nullable = false)
@@ -32,7 +36,7 @@ public class User  {
     private String lastName;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<Tag> tags;
+    private Set<TagModel> tags;
 
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")
@@ -42,9 +46,14 @@ public class User  {
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    public User() {}
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name="user_id", referencedColumnName = "id"),
+    inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    private Set<RoleModel> roles = new HashSet<>();
 
-    public User(String email, String userName, String firstName, String lastName, Set<Tag> tags) {
+    public UserModel() {}
+
+    public UserModel(String email, String userName, String firstName, String lastName, Set<TagModel> tags) {
         this.email = email;
         this.userName = userName;
         this.firstName = firstName;
@@ -52,11 +61,11 @@ public class User  {
         this.tags = tags;
     }
 
-    public Set<Tag> getTags() {
+    public Set<TagModel> getTags() {
         return tags;
     }
 
-    public void setTags(Set<Tag> tags) {
+    public void setTags(Set<TagModel> tags) {
         this.tags = tags;
     }
 
@@ -124,11 +133,19 @@ public class User  {
         this.updatedAt = updatedAt;
     }
 
+    public Set<RoleModel> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<RoleModel> roles) {
+        this.roles = roles;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
+        UserModel user = (UserModel) o;
         return Objects.equals(id, user.id) && Objects.equals(email, user.email)
                 && Objects.equals(userName, user.userName) && Objects.equals(firstName, user.firstName)
                 && Objects.equals(lastName, user.lastName) && Objects.equals(createdAt, user.createdAt)
@@ -149,6 +166,7 @@ public class User  {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", tags='" + tags.toString() + '\'' +
+                ", roles='" + roles.toString() + '\'' +
                 ", createdAt=" + createdAt + '\'' +
                 ", updatedAt=" + updatedAt + '\'' +
                 '}';

@@ -2,13 +2,13 @@ package online.jonwelzel.tagtreeapi.tag;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import online.jonwelzel.tagtreeapi.user.User;
+import online.jonwelzel.tagtreeapi.user.UserModel;
 
 import java.util.Objects;
 
 @Entity
 @Table(name = "tags")
-public class Tag {
+public class TagModel {
     @Id
     @GeneratedValue
     private Long id;
@@ -22,12 +22,12 @@ public class Tag {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnore
-    private User user;
+    private UserModel user;
 
-    public Tag() {
+    public TagModel() {
     }
 
-    public Tag(String name, String description, User user) {
+    public TagModel(String name, String description, UserModel user) {
         this.name = name;
         this.description = description;
         this.user = user;
@@ -57,18 +57,18 @@ public class Tag {
         this.description = description;
     }
 
-    public User getUser() {
+    public UserModel getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserModel user) {
         this.user = user;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Tag tag)) return false;
+        if (!(o instanceof TagModel tag)) return false;
         return Objects.equals(id, tag.id) && Objects.equals(name, tag.name)
                 && Objects.equals(description, tag.description) && Objects.equals(user.getId(), tag.user.getId());
     }
