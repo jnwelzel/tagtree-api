@@ -4,6 +4,8 @@ import online.jonwelzel.tagtreeapi.role.RoleModel;
 import online.jonwelzel.tagtreeapi.role.RoleRepository;
 import online.jonwelzel.tagtreeapi.user.UserModel;
 import online.jonwelzel.tagtreeapi.user.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,28 +24,33 @@ import java.util.Collections;
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
+    private static final Logger LOG = LoggerFactory.getLogger(AuthController.class);
+    private final TokenService tokenService;
+
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtGenerator jwtGenerator;
 
     public AuthController(AuthenticationManager authenticationManager, UserRepository userRepository,
-                          RoleRepository roleRepository, PasswordEncoder passwordEncoder, JwtGenerator jwtGenerator) {
+                          RoleRepository roleRepository, PasswordEncoder passwordEncoder, TokenService tokenService) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
-        this.jwtGenerator = jwtGenerator;
+        this.tokenService = tokenService;
     }
 
     @PostMapping("login")
     public ResponseEntity<LoginResponseDto> login(@RequestBody LoginDto loginDto) {
+        LOG.debug("Login request: {}", loginDto.getEmail());
+
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = tokenService.generateToken(authentication);
 
-        String token = jwtGenerator.generateToken(authentication);
+        LOG.debug("Generated token: {}", token);
 
         return ResponseEntity.ok(new LoginResponseDto(token));
     }
