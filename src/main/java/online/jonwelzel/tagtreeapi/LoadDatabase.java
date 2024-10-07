@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Set;
 
@@ -30,7 +31,8 @@ public class LoadDatabase {
             roleRepository.save(userRole);
             roleRepository.findAll().forEach(role -> log.info("Preloaded " + role));
 
-            UserModel user1 = new UserModel("bbaggins@shire.com", "bilbo", "Bilbo", "Baggins", Collections.emptySet());
+            UserModel user1 = new UserModel("bbaggins@shire.com", "bilbo", "Bilbo", "Baggins", Collections.emptySet(),
+                    new SimpleDateFormat("yyyy-MM-dd").parse("1550-02-15"));
             TagModel tag1 = new TagModel("PSN", "og-baggins", user1);
             TagModel tag2 = new TagModel("Steam", "bilbaggins", user1);
             user1.setTags(Set.of(tag1, tag2));
@@ -38,7 +40,8 @@ public class LoadDatabase {
             user1.setPassword(passwordEncoder.encode("admin"));
             userRepository.save(user1);
 
-            UserModel user2 = new UserModel("fbaggins@shire.com","frodo", "Frodo", "Baggins", Collections.emptySet());
+            UserModel user2 = new UserModel("fbaggins@shire.com","frodo", "Frodo", "Baggins", Collections.emptySet(),
+                    new SimpleDateFormat("yyyy-MM-dd").parse("1610-02-15"));
             user2.setPassword(passwordEncoder.encode("user"));
             user2.setRoles(Set.of(roleRepository.findByName("ROLE_USER").get()));
             userRepository.save(user2);

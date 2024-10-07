@@ -38,6 +38,10 @@ public class UserModel {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<TagModel> tags;
 
+    @Basic(optional = false)
+    @Temporal(TemporalType.DATE)
+    private Date dateOfBirth;
+
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")
     private Date createdAt;
@@ -53,12 +57,14 @@ public class UserModel {
 
     public UserModel() {}
 
-    public UserModel(String email, String userName, String firstName, String lastName, Set<TagModel> tags) {
+    public UserModel(String email, String userName, String firstName, String lastName, Set<TagModel> tags,
+                     Date dateOfBirth) {
         this.email = email;
         this.userName = userName;
         this.firstName = firstName;
         this.lastName = lastName;
         this.tags = tags;
+        this.dateOfBirth = dateOfBirth;
     }
 
     public Set<TagModel> getTags() {
@@ -115,6 +121,14 @@ public class UserModel {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Date getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     public Date getCreatedAt() {

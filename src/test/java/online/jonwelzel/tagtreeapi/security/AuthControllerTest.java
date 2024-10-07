@@ -25,7 +25,8 @@ class AuthControllerTest {
                         .content("{\"email\": \"bbaggins@shire.com\",\"password\": \"admin\"}"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.accessToken").exists());
+                .andExpect(jsonPath("$.accessToken").exists())
+                .andExpect(jsonPath("$.tokenType").value("Bearer "));
     }
 
     @Test
