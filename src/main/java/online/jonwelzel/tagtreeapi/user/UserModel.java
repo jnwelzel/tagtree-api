@@ -163,12 +163,12 @@ public class UserModel {
         return Objects.equals(id, user.id) && Objects.equals(email, user.email)
                 && Objects.equals(userName, user.userName) && Objects.equals(firstName, user.firstName)
                 && Objects.equals(lastName, user.lastName) && Objects.equals(createdAt, user.createdAt)
-                && Objects.equals(updatedAt, user.updatedAt);
+                && Objects.equals(updatedAt, user.updatedAt) && Objects.equals(dateOfBirth, user.dateOfBirth);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, userName, firstName, lastName, createdAt, updatedAt);
+        return Objects.hash(id, email, userName, firstName, lastName, createdAt, updatedAt, dateOfBirth);
     }
 
     @Override
@@ -181,6 +181,7 @@ public class UserModel {
                 ", lastName='" + lastName + '\'' +
                 ", tags='" + tags.toString() + '\'' +
                 ", roles='" + roles.toString() + '\'' +
+                ", dateOfBirth=" + dateOfBirth + '\'' +
                 ", createdAt=" + createdAt + '\'' +
                 ", updatedAt=" + updatedAt + '\'' +
                 '}';

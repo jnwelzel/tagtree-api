@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/users")
 public class UserController {
     private final UserRepository repository;
     private final UserModelAssembler assembler;
@@ -23,7 +23,7 @@ public class UserController {
         this.assembler = assembler;
     }
 
-    @GetMapping("users/{id}")
+    @GetMapping("{id}")
     public EntityModel<UserModel> one(@PathVariable Long id) {
         UserModel user = repository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
@@ -31,7 +31,7 @@ public class UserController {
         return assembler.toModel(user);
     }
 
-    @GetMapping("users")
+    @GetMapping()
     public CollectionModel<EntityModel<UserModel>> all() {
         List<EntityModel<UserModel>> users = repository.findAll().stream()
                 .map(assembler::toModel)

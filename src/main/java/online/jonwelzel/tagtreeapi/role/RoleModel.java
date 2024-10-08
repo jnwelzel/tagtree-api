@@ -12,12 +12,13 @@ public class RoleModel {
     private long id;
 
     @Column(nullable = false)
-    private String name;
+    @Enumerated(EnumType.STRING)
+    private ROLES name;
 
     public RoleModel() {
     }
 
-    public RoleModel(String name) {
+    public RoleModel(ROLES name) {
         this.name = name;
     }
 
@@ -25,11 +26,11 @@ public class RoleModel {
         return id;
     }
 
-    public String getName() {
+    public ROLES getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(ROLES name) {
         this.name = name;
     }
 

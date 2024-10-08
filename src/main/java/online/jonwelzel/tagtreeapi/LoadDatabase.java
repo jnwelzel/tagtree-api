@@ -1,5 +1,6 @@
 package online.jonwelzel.tagtreeapi;
 
+import online.jonwelzel.tagtreeapi.role.ROLES;
 import online.jonwelzel.tagtreeapi.role.RoleModel;
 import online.jonwelzel.tagtreeapi.role.RoleRepository;
 import online.jonwelzel.tagtreeapi.tag.TagModel;
@@ -25,8 +26,8 @@ public class LoadDatabase {
                                    PasswordEncoder passwordEncoder) {
 
         return args -> {
-            RoleModel adminRole = new RoleModel("ROLE_ADMIN");
-            RoleModel userRole = new RoleModel("ROLE_USER");
+            RoleModel adminRole = new RoleModel(ROLES.ADMIN);
+            RoleModel userRole = new RoleModel(ROLES.USER);
             roleRepository.save(adminRole);
             roleRepository.save(userRole);
             roleRepository.findAll().forEach(role -> log.info("Preloaded " + role));
@@ -36,14 +37,14 @@ public class LoadDatabase {
             TagModel tag1 = new TagModel("PSN", "og-baggins", user1);
             TagModel tag2 = new TagModel("Steam", "bilbaggins", user1);
             user1.setTags(Set.of(tag1, tag2));
-            user1.setRoles(Set.of(roleRepository.findByName("ROLE_ADMIN").get()));
+            user1.setRoles(Set.of(roleRepository.findByName(ROLES.ADMIN).get()));
             user1.setPassword(passwordEncoder.encode("admin"));
             userRepository.save(user1);
 
             UserModel user2 = new UserModel("fbaggins@shire.com","frodo", "Frodo", "Baggins", Collections.emptySet(),
                     new SimpleDateFormat("yyyy-MM-dd").parse("1610-02-15"));
             user2.setPassword(passwordEncoder.encode("user"));
-            user2.setRoles(Set.of(roleRepository.findByName("ROLE_USER").get()));
+            user2.setRoles(Set.of(roleRepository.findByName(ROLES.USER).get()));
             userRepository.save(user2);
 
             userRepository.findAll().forEach(user -> log.info("Preloaded " + user));

@@ -8,16 +8,19 @@ public class RegisterDto {
     private String password;
     private String firstName;
     private String lastName;
+    private String dateOfBirth;
 
     public RegisterDto() {
     }
 
-    public RegisterDto(String email, String userName, String password, String firstName, String lastName) {
+    public RegisterDto(String email, String userName, String password, String firstName, String lastName,
+                       String dateOfBirth) {
         this.email = email;
         this.userName = userName;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
     }
 
     public String getEmail() {
@@ -60,18 +63,26 @@ public class RegisterDto {
         this.lastName = lastName;
     }
 
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof RegisterDto authDto)) return false;
         return Objects.equals(email, authDto.email) && Objects.equals(userName, authDto.userName)
                 && Objects.equals(password, authDto.password) && Objects.equals(firstName, authDto.firstName)
-                && Objects.equals(lastName, authDto.lastName);
+                && Objects.equals(lastName, authDto.lastName) && Objects.equals(dateOfBirth, authDto.dateOfBirth);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(email, userName, password, firstName, lastName);
+        return Objects.hash(email, userName, password, firstName, lastName, dateOfBirth);
     }
 
     @Override
@@ -80,8 +91,9 @@ public class RegisterDto {
                 "email='" + email + '\'' +
                 ", userName='" + userName + '\'' +
                 ", password='" + password + '\'' +
-                ", password='" + firstName + '\'' +
-                ", password='" + lastName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", dateOfBirth='" + lastName + '\'' +
                 '}';
     }
 }

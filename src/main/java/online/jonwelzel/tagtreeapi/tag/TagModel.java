@@ -1,6 +1,6 @@
 package online.jonwelzel.tagtreeapi.tag;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import online.jonwelzel.tagtreeapi.user.UserModel;
 
@@ -21,7 +21,9 @@ public class TagModel {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonIgnore
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityReference(alwaysAsId = true)
+    @JsonProperty("userId")
     private UserModel user;
 
     public TagModel() {
@@ -84,6 +86,7 @@ public class TagModel {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", userId=" + user.getId() + '\'' +
                 '}';
     }
 }

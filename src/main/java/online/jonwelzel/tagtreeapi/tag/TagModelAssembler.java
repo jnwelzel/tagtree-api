@@ -12,7 +12,7 @@ public class TagModelAssembler implements RepresentationModelAssembler<TagModel,
     @Override
     public EntityModel<TagModel> toModel(TagModel tag) {
         return EntityModel.of(tag, //
-                linkTo(methodOn(TagController.class).one(tag.getUser().getId(), tag.getId())).withSelfRel());
+                linkTo(methodOn(TagController.class).one(tag.getId())).withSelfRel());
     }
 
 }

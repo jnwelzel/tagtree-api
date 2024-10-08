@@ -1,5 +1,6 @@
 package online.jonwelzel.tagtreeapi.security;
 
+import online.jonwelzel.tagtreeapi.role.ROLES;
 import online.jonwelzel.tagtreeapi.role.RoleModel;
 import online.jonwelzel.tagtreeapi.role.RoleRepository;
 import online.jonwelzel.tagtreeapi.user.UserModel;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 
 @RestController
@@ -56,7 +59,7 @@ public class AuthController {
     }
 
     @PostMapping("register")
-    public ResponseEntity<UserModel> register(@RequestBody RegisterDto registerDto) {
+    public ResponseEntity<UserModel> register(@RequestBody RegisterDto registerDto) throws ParseException {
         if (userRepository.existsByEmail(registerDto.getEmail()) ||
                 userRepository.existsByUserName(registerDto.getUserName())) {
             throw new RegistrationException("User already exists");
@@ -68,8 +71,9 @@ public class AuthController {
         user.setEmail(registerDto.getEmail());
         user.setFirstName(registerDto.getFirstName());
         user.setLastName(registerDto.getLastName());
+        user.setDateOfBirth(new SimpleDateFormat("yyyy-MM-dd").parse(registerDto.getDateOfBirth()));
 
-        RoleModel role = roleRepository.findByName("ROLE_USER").get();
+        RoleModel role = roleRepository.findByName(ROLES.USER).get();
         user.setRoles(Collections.singleton(role));
 
         userRepository.save(user);
