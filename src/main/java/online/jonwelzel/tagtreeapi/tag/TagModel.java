@@ -21,7 +21,7 @@ public class TagModel {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "uuid")
     @JsonIdentityReference(alwaysAsId = true)
     @JsonProperty("userId")
     private UserModel user;
@@ -86,7 +86,7 @@ public class TagModel {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", userId=" + user.getId() + '\'' +
+                ", userId=" + user.getUuid() + '\'' +
                 '}';
     }
 }

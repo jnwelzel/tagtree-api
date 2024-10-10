@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Set;
+import java.util.UUID;
 
 @Configuration
 public class LoadDatabase {
@@ -37,6 +38,7 @@ public class LoadDatabase {
             TagModel tag1 = new TagModel("PSN", "og-baggins", user1);
             TagModel tag2 = new TagModel("Steam", "bilbaggins", user1);
             user1.setTags(Set.of(tag1, tag2));
+            user1.setUuid(UUID.fromString("2239b026-f46a-4931-a9b2-21ab26894345"));
             user1.setRoles(Set.of(roleRepository.findByName(ROLES.ADMIN).get()));
             user1.setPassword(passwordEncoder.encode("admin"));
             userRepository.save(user1);

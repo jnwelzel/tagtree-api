@@ -20,7 +20,7 @@ public class UserControllerTests {
     Jwt jwt = Jwt.withTokenValue("token")
             .header("alg", "RS256")
             .claim("scope", "ADMIN")
-            .claim("sub", "bbaggins@shire.com").build();
+            .claim("sub", "2239b026-f46a-4931-a9b2-21ab26894345").build();
 
     @Test
     void one() throws Exception {

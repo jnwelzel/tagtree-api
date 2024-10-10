@@ -7,17 +7,18 @@ import online.jonwelzel.tagtreeapi.tag.TagModel;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
 public class UserModel {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
+
+    @Column(nullable = false)
+    private UUID uuid = UUID.randomUUID();
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -73,6 +74,14 @@ public class UserModel {
 
     public void setTags(Set<TagModel> tags) {
         this.tags = tags;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public Long getId() {
@@ -163,18 +172,20 @@ public class UserModel {
         return Objects.equals(id, user.id) && Objects.equals(email, user.email)
                 && Objects.equals(userName, user.userName) && Objects.equals(firstName, user.firstName)
                 && Objects.equals(lastName, user.lastName) && Objects.equals(createdAt, user.createdAt)
-                && Objects.equals(updatedAt, user.updatedAt) && Objects.equals(dateOfBirth, user.dateOfBirth);
+                && Objects.equals(updatedAt, user.updatedAt) && Objects.equals(dateOfBirth, user.dateOfBirth)
+                && Objects.equals(uuid, user.uuid);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, userName, firstName, lastName, createdAt, updatedAt, dateOfBirth);
+        return Objects.hash(id, email, userName, firstName, lastName, createdAt, updatedAt, dateOfBirth, uuid);
     }
 
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
+                ", uuid='" + uuid + '\'' +
                 ", email='" + email + '\'' +
                 ", userName='" + userName + '\'' +
                 ", firstName='" + firstName + '\'' +
